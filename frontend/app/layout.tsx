@@ -32,18 +32,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-screen overflow-hidden`}
       >
-        <div className="flex h-full w-full">
-          <ModelProvider>
-            <ProjectProvider>
-              <AppSidebar />
-              <main className="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
-                <div className="flex-1 overflow-auto">
-                  {children}
-                </div>
-              </main>
-            </ProjectProvider>
-          </ModelProvider>
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+          <div className="flex h-full w-full">
+            <ModelProvider>
+              <ProjectProvider>
+                <AppSidebar />
+                <main className="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
+                  <div className="flex-1 overflow-auto">
+                    {children}
+                  </div>
+                </main>
+              </ProjectProvider>
+            </ModelProvider>
+          </div>
+        </Suspense>
         <Toaster />
       </body>
     </html>

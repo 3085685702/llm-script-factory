@@ -89,36 +89,22 @@ DEEPSEEK_API_KEY=你的DeepSeek密钥
 
 **Windows 用户：** 双击运行 `install.bat`
 
-**macOS/Linux 用户：**
+**macOS/Linux 用户：** 运行安装脚本
 
 ```bash
-# 后端
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-# 前端
-cd ../frontend
-npm install
-npm run build
+chmod +x install.sh
+./install.sh
 ```
 
 ### 4. 启动应用
 
 **Windows 用户：** 双击运行 `start.bat`
 
-**macOS/Linux 用户：**
+**macOS/Linux 用户：** 运行启动脚本
 
 ```bash
-# 终端 1：启动后端
-cd backend
-source .venv/bin/activate
-uvicorn main:app --host 127.0.0.1 --port 8000
-
-# 终端 2：启动前端
-cd frontend
-npm run start
+chmod +x start.sh
+./start.sh
 ```
 
 打开浏览器访问：**http://127.0.0.1:3000**

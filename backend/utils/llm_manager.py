@@ -186,7 +186,7 @@ class LLMManager:
                     model_name=model_name,
                     messages=messages,
                     temperature=temperature,
-                    response_schema=response_schema
+                    response_schema=None # response_schema # DeepSeek 不支持 response_format，暂时禁用
                 )
                 
                 raw_text = response.choices[0].message.content

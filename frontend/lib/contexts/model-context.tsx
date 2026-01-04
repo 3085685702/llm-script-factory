@@ -20,7 +20,7 @@ interface ModelContextType {
 }
 
 const defaultSettings: ModelSettings = {
-    model: "gemini-1.5-flash",
+    model: "", // 默认为空，强制用户选择
     temperature: 0.7,
     useCache: false,
     cacheTTL: 600

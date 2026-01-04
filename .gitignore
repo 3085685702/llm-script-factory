@@ -6,6 +6,7 @@
 ._*
 .vscode/
 .idea/
+*.log
 
 # =========================
 # Secrets & Environments
