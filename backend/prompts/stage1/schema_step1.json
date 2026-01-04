@@ -1,0 +1,54 @@
+{
+    "type": "object",
+    "required": [
+        "title",
+        "logline",
+        "synopsis",
+        "characters"
+    ],
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "logline": {
+            "type": "string"
+        },
+        "background": {
+            "type": "string"
+        },
+        "theme": {
+            "type": "string"
+        },
+        "value_analysis": {
+            "type": "string"
+        },
+        "synopsis": {
+            "type": "string"
+        },
+        "characters": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "role",
+                    "desc"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "desc": {
+                        "type": "string"
+                    },
+                    "tags": {
+                        "type": "array"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{# Page 2 Step 1: DTG Context & Story Bible #}
+【全量理论库 Context】
+以下是本次创作必须严格遵循的 DTG 理论库与核心创作法则：
+{{ full_context }}
+
+【世界观与核心设定 (Story Bible)】
+这是本项目的 "世界观与核心设定"，包含已确定的 人设、梗概 和 8张核心卡片规划。
+所有生成的剧情必须严格符合以下设定，不得出现人设崩塌或逻辑断裂：
+{{ story_bible }}
+
+{% if user_input %}
+【用户原始设计 (Core Concept)】
+以下是用户在 Stage 1 输入的核心创意与设计指令，是最高优先级的创作约束：
+{{ user_input }}
+{% endif %}

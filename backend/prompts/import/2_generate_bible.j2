@@ -1,0 +1,54 @@
+请根据以下【完整剧本】，反向提炼出故事圣经（Story Bible）。
+
+【完整剧本摘要】
+共 {{ episode_count }} 集
+
+{% for ep in episodes[:5] %}
+=== 第 {{ ep.ep_id }} 集 ===
+{{ ep.scenes[0].content[:500] if ep.scenes else '' }}...
+{% endfor %}
+
+{% if episode_count > 5 %}
+...(省略中间 {{ episode_count - 10 }} 集)...
+
+{% for ep in episodes[-5:] %}
+=== 第 {{ ep.ep_id }} 集 ===
+{{ ep.scenes[0].content[:500] if ep.scenes else '' }}...
+{% endfor %}
+{% endif %}
+
+---
+
+请按以下 JSON 格式输出故事圣经，不要包含 Markdown 代码块标记：
+
+{
+    "title": "剧名（从剧本推断）",
+    "genre": "类型（如：甜宠、复仇、逆袭等）",
+    "synopsis": "故事梗概（300字以内）",
+    "setting": {
+        "era": "时代背景",
+        "location": "主要地点",
+        "social_context": "社会环境"
+    },
+    "characters": [
+        {
+            "name": "角色姓名",
+            "role": "主角/配角/反派",
+            "identity": "身份",
+            "personality": "性格特点",
+            "goal": "人物目标"
+        }
+    ],
+    "relationships": [
+        {
+            "characters": ["角色A", "角色B"],
+            "relation": "关系类型",
+            "description": "关系描述"
+        }
+    ],
+    "plot_hooks": [
+        "爽点1：xxx",
+        "爽点2：xxx"
+    ],
+    "raw_content": "将以上内容整理为自然语言描述（用于人工阅读）"
+}

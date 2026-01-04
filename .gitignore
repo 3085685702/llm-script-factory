@@ -1,0 +1,43 @@
+# =========================
+# Global System & IDE
+# =========================
+.DS_Store
+.DS_Store?
+._*
+.vscode/
+.idea/
+
+# =========================
+# Secrets & Environments
+# =========================
+.env
+.env.*
+!.env.example
+secrets.toml
+
+# =========================
+# Backend (Python / FastAPI)
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+backend/__pycache__/
+.venv/
+
+# =========================
+# Frontend (Nuxt.js / Node)
+# =========================
+node_modules/
+.nuxt/
+.output/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# =========================
+# Streamlit & Legacy Utils
+# =========================
+.streamlit/

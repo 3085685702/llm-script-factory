@@ -1,0 +1,17 @@
+{# Page 3 Step 1: DTG Context & Bible #}
+【全量理论库 Context】
+以下是本次创作必须严格遵循的 DTG 理论库（核心法则 + 台词指南）：
+{{ full_context }}
+
+【世界观与核心设定 (Story Bible)】
+这是本项目的 "世界观与核心设定"，包含人设、梗概和总纲。
+Stage 3 的集纲创作必须严格遵循人设，不得 OOC (Out of Character)：
+{{ story_bible }}
+
+{% if user_input %}
+【用户原始设计 (Core Concept)】
+以下是用户在 Stage 1 输入的核心创意与设计指令，是最高优先级的创作约束：
+{{ user_input }}
+{% endif %}
+
+---

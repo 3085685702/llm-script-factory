@@ -1,0 +1,68 @@
+{# Page 2 Refine: User Prompt for Adjustment Mode #}
+
+【重要：当前任务】
+
+{# 任务范围 #}
+**当前任务说明**:
+请调整第 {{ start_ep }} 集 到 第 {{ end_ep }} 集 (共 {{ end_ep - start_ep + 1 }} 集) 的详细大纲。
+此部分对应 **卡 {{ current_card.get('card_id', 'Unknown') }}** 的 **单元 {{ current_unit.get('unit_id', 1) }}**。
+
+**当前单元信息**:
+- 结构模式: {{ current_card.get('structure', '未知') }}
+- 单元模式: {{ current_unit.get('pattern', '未知') }}
+- 单元梗概: {{ current_unit.get('summary', '') }}
+
+{# 前情提要（上一单元已生成的剧集大纲） #}
+{% if previous_episodes and previous_episodes|length > 0 %}
+**前情提要 (上一单元已生成的剧集大纲)**:
+{% for ep in previous_episodes %}
+- 第 {{ ep.ep_id }} 集「{{ ep.title }}」: {{ ep.outline }}
+{% endfor %}
+
+*请紧接上述剧情发展，确保剧情连贯。*
+{% else %}
+**前情提要**: 无（这是第一个单元，请直接根据 Synopsis 开场。）
+{% endif %}
+
+{# 已生成的本单元大纲 #}
+**已生成的本单元大纲（当前版本，需根据用户指令调整）**:
+{% for ep in existing_outlines %}
+第 {{ ep.ep_id }} 集「{{ ep.title }}」: {{ ep.outline }}
+{% endfor %}
+
+{# 用户调整指令 #}
+**重要：用户调整指令**:
+{{ adjustment_instruction }}
+
+{# 生成指令 #}
+**重要：当前生成指令**:
+请根据用户的调整指令，在保持整体剧情连贯性的前提下，修改上述大纲并输出新的 JSON。
+
+**具体要求**:
+1. 仔细理解用户的调整意图
+2. 保持未提及部分的连贯性
+3. 确保每集仍有明确的钩子和爽点
+4. 严格按照单元梗概展开剧情，确保故事单元完整闭环。
+5. 本单元的每一集都要有明确的起承转合，注意剧情连贯性（上下集内容衔接要明确，不可有断层）。
+6. 注意：粗纲outline无需写卡点，但要考虑给卡点制造机会！
+7. 注意十集整数集的大转折、大高潮或大转折。
+8. 一集最多进行1次场景切换，尽量在1个场景内把事情讲清楚即可。
+
+**JSON 输出格式示例** (禁止照抄内容，仅作格式参考):
+```json
+{
+  "episodes": [
+    {
+      "ep_id": {{ start_ep }},
+      "title": "两字或四字核心事件",
+      "outline": "单集粗纲，200字以上(强制要求)，用起、承、转、合四句话说清楚剧情来龙去脉、变化（强制要求，必须明确标注），无需具体台词、镜头等细节。",
+      "emotional_value": "本集的情绪点类型 (e.g. 爽/期待/打脸/复仇/温情)",
+      "dtg_check": "本集符合 DTG 哪个具体要求 (e.g. 3分钟小高潮)"
+    }
+  ]
+}
+```
+
+**最后指令**:
+仅输出 JSON，不要包含任何寒暄、解释或 Markdown 代码块标记。开始！
+

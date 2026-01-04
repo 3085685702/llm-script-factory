@@ -1,0 +1,41 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": [
+            "ep_id",
+            "scenes",
+            "hook"
+        ],
+        "properties": {
+            "ep_id": {
+                "type": "integer"
+            },
+            "scenes": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "scene_id",
+                        "location",
+                        "content"
+                    ],
+                    "properties": {
+                        "scene_id": {
+                            "type": "string"
+                        },
+                        "location": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "hook": {
+                "type": "string"
+            }
+        }
+    }
+}

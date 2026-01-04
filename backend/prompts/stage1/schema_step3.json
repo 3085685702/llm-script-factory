@@ -1,0 +1,63 @@
+{
+    "type": "object",
+    "required": [
+        "detailed_cards"
+    ],
+    "properties": {
+        "detailed_cards": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "card_id",
+                    "structure",
+                    "story_units"
+                ],
+                "properties": {
+                    "card_id": {
+                        "type": [
+                            "integer",
+                            "string"
+                        ]
+                    },
+                    "structure": {
+                        "type": "string",
+                        "description": "故事单元分隔模式，如 23+32, 334, 2323"
+                    },
+                    "story_units": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "unit_id",
+                                "episodes",
+                                "pattern",
+                                "summary"
+                            ],
+                            "properties": {
+                                "unit_id": {
+                                    "type": [
+                                        "integer",
+                                        "string"
+                                    ]
+                                },
+                                "episodes": {
+                                    "type": "string",
+                                    "description": "集数范围，如 1-5, 6-10"
+                                },
+                                "pattern": {
+                                    "type": "string",
+                                    "description": "单元内章节分布，如 2+3, 3+2, 4"
+                                },
+                                "summary": {
+                                    "type": "string",
+                                    "description": "该故事单元的完整梗概"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

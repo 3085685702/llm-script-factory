@@ -1,0 +1,29 @@
+{
+    "type": "object",
+    "required": [
+        "rough_skeleton"
+    ],
+    "properties": {
+        "rough_skeleton": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "card_id",
+                    "one_sentence_summary"
+                ],
+                "properties": {
+                    "card_id": {
+                        "type": [
+                            "integer",
+                            "string"
+                        ]
+                    },
+                    "one_sentence_summary": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

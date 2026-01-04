@@ -1,0 +1,30 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": [
+            "ep_id",
+            "title",
+            "outline",
+            "emotional_value",
+            "dtg_check"
+        ],
+        "properties": {
+            "ep_id": {
+                "type": "integer"
+            },
+            "title": {
+                "type": "string"
+            },
+            "outline": {
+                "type": "string"
+            },
+            "emotional_value": {
+                "type": "string"
+            },
+            "dtg_check": {
+                "type": "string"
+            }
+        }
+    }
+}

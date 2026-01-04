@@ -1,0 +1,43 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": [
+            "ep_id",
+            "scenes"
+        ],
+        "properties": {
+            "ep_id": {
+                "type": "integer",
+                "description": "Episode ID"
+            },
+            "scenes": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "scene_id",
+                        "content"
+                    ],
+                    "properties": {
+                        "scene_id": {
+                            "type": "string"
+                        },
+                        "time": {
+                            "type": "string"
+                        },
+                        "location": {
+                            "type": "string"
+                        },
+                        "characters": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
