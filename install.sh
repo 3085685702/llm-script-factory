@@ -39,8 +39,8 @@ python3 -m venv .venv || { echo "[ERROR] Failed to create virtual environment"; 
 
 source .venv/bin/activate || { echo "[ERROR] Failed to activate virtual environment"; exit 1; }
 
-echo "      Installing backend dependencies..."
-pip install -r requirements.txt || { echo "[ERROR] Failed to install backend dependencies"; exit 1; }
+echo "      Installing backend dependencies (using Tsinghua mirror)..."
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple || { echo "[ERROR] Failed to install backend dependencies"; exit 1; }
 
 # Auto configure .env
 if [ ! -f ".env" ]; then
@@ -61,7 +61,7 @@ echo "      Backend is ready"
 # 4. Install frontend dependencies
 echo "[4/5] Installing frontend dependencies..."
 cd frontend || { echo "[ERROR] Cannot enter frontend directory"; exit 1; }
-npm install || { echo "[ERROR] Failed to install frontend dependencies"; exit 1; }
+npm install --registry=https://registry.npmmirror.com || { echo "[ERROR] Failed to install frontend dependencies"; exit 1; }
 echo "      Frontend dependencies installed"
 
 # 5. Build frontend

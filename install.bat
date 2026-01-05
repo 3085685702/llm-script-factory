@@ -56,8 +56,8 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo       Installing backend dependencies...
-call .venv\Scripts\pip install -r requirements.txt -q
+echo       Installing backend dependencies (using Tsinghua mirror)...
+call .venv\Scripts\pip install -r requirements.txt -q -i https://pypi.tuna.tsinghua.edu.cn/simple
 if errorlevel 1 (
     echo [ERROR] Failed to install backend dependencies
     cd /d "%ROOT_DIR%"
@@ -90,7 +90,7 @@ if not exist "%ROOT_DIR%frontend" (
 )
 cd /d "%ROOT_DIR%frontend"
 
-call npm install
+call npm install --registry=https://registry.npmmirror.com
 if errorlevel 1 (
     echo [ERROR] Failed to install frontend dependencies
     cd /d "%ROOT_DIR%"
