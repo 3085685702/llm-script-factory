@@ -6,16 +6,30 @@ echo.
 :: 保存当前目录
 set "ROOT=%~dp0"
 
+:: 检查后端虚拟环境
+if not exist "%ROOT%backend\.venv" (
+    echo [错误] 未检测到后端虚拟环境，请先运行 install.bat
+    pause
+    exit /b 1
+)
+
+:: 检查前端依赖
+if not exist "%ROOT%frontend\node_modules" (
+    echo [错误] 未检测到前端依赖，请先运行 install.bat
+    pause
+    exit /b 1
+)
+
 :: 启动后端（新窗口）
 echo 正在启动后端服务...
-start "后端服务" cmd /k "cd /d %ROOT%backend && .venv\Scripts\uvicorn main:app --host 127.0.0.1 --port 8000"
+start "后端服务" cmd /k "cd /d "%ROOT%backend" && .venv\Scripts\uvicorn main:app --host 127.0.0.1 --port 8000"
 
 :: 等待后端启动
 timeout /t 2 /nobreak >nul
 
 :: 启动前端（新窗口）
 echo 正在启动前端服务...
-start "前端服务" cmd /k "cd /d %ROOT%frontend && npm run start"
+start "前端服务" cmd /k "cd /d "%ROOT%frontend" && npm run start"
 
 :: 等待前端启动后打开浏览器
 timeout /t 3 /nobreak >nul
