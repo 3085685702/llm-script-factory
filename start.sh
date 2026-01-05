@@ -1,72 +1,67 @@
 #!/bin/bash
 
-# 获取脚本所在目录的绝对路径
+# Get the absolute path of the script directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
-echo "🚀 正在启动 Script Factory AI..."
+echo "Starting Script Factory AI..."
 
-# 检查后端虚拟环境是否存在
+# Check backend virtual environment
 if [ ! -d "backend/.venv" ]; then
-    echo "❌ 未检测到后端虚拟环境，请先运行安装脚本或参考 README 配置环境。"
-    echo "   (Checked: backend/.venv)"
+    echo "[ERROR] Backend venv not found. Please run install.sh first."
     exit 1
 fi
 
-# 启动后端
-echo "🔥 启动后端服务..."
+# Start backend
+echo "Starting backend service..."
 cd backend
 source .venv/bin/activate
-# 使用 nohup 运行或直接后台运行，这里选择后台运行并将日志输出到文件或保持在终端
-# 为了让用户看到日志，我们不重定向输出，或者我们可以选择开新终端
-# 这里采用单窗口聚合模式，通过 trap 清理后台进程
 uvicorn main:app --host 127.0.0.1 --port 8000 > ../backend.log 2>&1 &
 BACKEND_PID=$!
-echo "   后端 PID: $BACKEND_PID (日志: backend.log)"
+echo "   Backend PID: $BACKEND_PID (log: backend.log)"
 cd ..
 
-# 等待后端稍微初始化
+# Wait for backend to initialize
 sleep 2
 
-# 启动前端
-echo "🎨 启动前端服务..."
+# Start frontend
+echo "Starting frontend service..."
 cd frontend
-# 检查 node_modules
+# Check node_modules
 if [ ! -d "node_modules" ]; then
-    echo "❌ 未检测到 frontend/node_modules，请先运行 npm install。"
-    # 尝试清理后端
-    kill $BACKEND_PID
+    echo "[ERROR] frontend/node_modules not found. Please run npm install."
+    kill $BACKEND_PID 2>/dev/null
     exit 1
 fi
 
 npm run start > ../frontend.log 2>&1 &
 FRONTEND_PID=$!
-echo "   前端 PID: $FRONTEND_PID (日志: frontend.log)"
+echo "   Frontend PID: $FRONTEND_PID (log: frontend.log)"
 cd ..
 
-# 等待前端启动
+# Wait for frontend to start
 sleep 3
 
-# 打开浏览器
-echo "🌐 打开浏览器..."
+# Open browser
+echo "Opening browser..."
 open "http://127.0.0.1:3000"
 
 echo ""
-echo "✅ 服务已启动！"
-echo "   - 后端日志见: backend.log"
-echo "   - 前端日志见: frontend.log"
-echo "👉 按 Ctrl+C 停止所有服务"
+echo "Services started!"
+echo "   - Backend log: backend.log"
+echo "   - Frontend log: frontend.log"
+echo "Press Ctrl+C to stop all services"
 
-# 捕获退出信号以清理子进程
+# Trap exit signals to cleanup child processes
 cleanup() {
     echo ""
-    echo "🛑正在停止服务..."
-    kill $BACKEND_PID
-    kill $FRONTEND_PID
+    echo "Stopping services..."
+    kill $BACKEND_PID 2>/dev/null
+    kill $FRONTEND_PID 2>/dev/null
     exit
 }
 
 trap cleanup SIGINT SIGTERM
 
-# 保持脚本运行
+# Keep script running
 wait

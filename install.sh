@@ -1,80 +1,80 @@
 #!/bin/bash
 
-# 获取脚本所在目录的绝对路径
+# Get the absolute path of the script directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
 echo "========================================"
-echo "  Script Factory AI - 安装脚本 (Mac/Linux)"
+echo "  Script Factory AI - Installation (Mac)"
 echo "========================================"
 echo ""
 
-# 1. 检查 Python
-echo "[1/5] 检查 Python 环境..."
+# 1. Check Python
+echo "[1/5] Checking Python..."
 if ! command -v python3 &> /dev/null; then
-    echo "❌ [错误] 未找到 python3，请先安装 Python 3.10+"
+    echo "[ERROR] python3 not found. Please install Python 3.10+"
     exit 1
 fi
-echo "      ✅ Python 已安装 ($(python3 --version))"
+echo "      Python is installed ($(python3 --version))"
 
-# 2. 检查 Node.js
-echo "[2/5] 检查 Node.js 环境..."
+# 2. Check Node.js
+echo "[2/5] Checking Node.js..."
 if ! command -v node &> /dev/null; then
-    echo "❌ [错误] 未找到 node，请先安装 Node.js 18+"
+    echo "[ERROR] node not found. Please install Node.js 18+"
     exit 1
 fi
-echo "      ✅ Node.js 已安装 ($(node --version))"
+echo "      Node.js is installed ($(node --version))"
 
-# 3. 初始化后端
-echo "[3/5] 初始化后端环境..."
-cd backend || { echo "❌ [错误] 无法进入 backend 目录"; exit 1; }
+# 3. Setup backend
+echo "[3/5] Setting up backend..."
+cd backend || { echo "[ERROR] Cannot enter backend directory"; exit 1; }
 
 if [ -d ".venv" ]; then
-    echo "      🧹 检测到旧的虚拟环境，正在删除..."
-    rm -rf .venv || { echo "❌ [错误] 删除旧虚拟环境失败"; exit 1; }
+    echo "      Removing old virtual environment..."
+    rm -rf .venv || { echo "[ERROR] Failed to remove old venv"; exit 1; }
 fi
 
-echo "      🔨 创建 Python 虚拟环境..."
-python3 -m venv .venv || { echo "❌ [错误] 创建虚拟环境失败"; exit 1; }
+echo "      Creating Python virtual environment..."
+python3 -m venv .venv || { echo "[ERROR] Failed to create virtual environment"; exit 1; }
 
-source .venv/bin/activate || { echo "❌ [错误] 激活虚拟环境失败"; exit 1; }
+source .venv/bin/activate || { echo "[ERROR] Failed to activate virtual environment"; exit 1; }
 
-echo "      📦 安装后端依赖..."
-pip install -r requirements.txt || { echo "❌ [错误] 安装后端依赖失败"; exit 1; }
+echo "      Installing backend dependencies..."
+pip install -r requirements.txt || { echo "[ERROR] Failed to install backend dependencies"; exit 1; }
 
-# 自动配置 .env
+# Auto configure .env
 if [ ! -f ".env" ]; then
-    echo "      ⚙️  未检测到 .env，正在从 .env.example 复制..."
+    echo "      .env not found, copying from .env.example..."
     if [ -f ".env.example" ]; then
-        cp .env.example .env || { echo "❌ [错误] 复制 .env 文件失败"; exit 1; }
-        echo "      ⚠️  请稍后编辑 backend/.env 填入您的 API Key！"
+        cp .env.example .env || { echo "[ERROR] Failed to copy .env file"; exit 1; }
+        echo "      [NOTE] Please edit backend/.env to add your API Key!"
     else
-        echo "      ⚠️  .env.example 不存在，请手动创建 backend/.env 文件"
+        echo "      [NOTE] .env.example not found. Please create backend/.env manually."
     fi
 else
-    echo "      ✅ .env文件已存在"
+    echo "      .env file exists"
 fi
 
 cd "$SCRIPT_DIR"
-echo "      ✅ 后端环境已就绪"
+echo "      Backend is ready"
 
-# 4. 安装前端依赖
-echo "[4/5] 安装前端依赖..."
-cd frontend || { echo "❌ [错误] 无法进入 frontend 目录"; exit 1; }
-npm install || { echo "❌ [错误] 安装前端依赖失败"; exit 1; }
-echo "      ✅ 前端依赖已安装"
+# 4. Install frontend dependencies
+echo "[4/5] Installing frontend dependencies..."
+cd frontend || { echo "[ERROR] Cannot enter frontend directory"; exit 1; }
+npm install || { echo "[ERROR] Failed to install frontend dependencies"; exit 1; }
+echo "      Frontend dependencies installed"
 
-# 5. 构建前端
-echo "[5/5] 构建前端生产版本..."
-npm run build || { echo "❌ [错误] 前端构建失败"; exit 1; }
+# 5. Build frontend
+echo "[5/5] Building frontend for production..."
+npm run build || { echo "[ERROR] Frontend build failed"; exit 1; }
 cd "$SCRIPT_DIR"
-echo "      ✅ 前端构建完成"
+echo "      Frontend build complete"
 
 echo ""
 echo "========================================"
-echo "  🎉 安装完成！"
+echo "  Installation Complete!"
 echo "========================================"
 echo ""
-echo "👉 运行方式: ./start.sh"
-echo "👉 记得配置 API Key: 编辑 backend/.env 文件"
+echo "To start: ./start.sh"
+echo "Remember to configure your API Key in backend/.env"
 echo ""

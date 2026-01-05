@@ -1,42 +1,41 @@
 @echo off
-chcp 65001 >nul
-echo 启动 Script Factory AI...
+echo Starting Script Factory AI...
 echo.
 
-:: 保存当前目录
+:: Store root directory
 set "ROOT=%~dp0"
 
-:: 检查后端虚拟环境
+:: Check backend virtual environment
 if not exist "%ROOT%backend\.venv" (
-    echo [错误] 未检测到后端虚拟环境，请先运行 install.bat
+    echo [ERROR] Backend venv not found. Please run install.bat first.
     pause
     exit /b 1
 )
 
-:: 检查前端依赖
+:: Check frontend dependencies
 if not exist "%ROOT%frontend\node_modules" (
-    echo [错误] 未检测到前端依赖，请先运行 install.bat
+    echo [ERROR] Frontend dependencies not found. Please run install.bat first.
     pause
     exit /b 1
 )
 
-:: 启动后端（新窗口）
-echo 正在启动后端服务...
-start "后端服务" cmd /k "cd /d "%ROOT%backend" && .venv\Scripts\uvicorn main:app --host 127.0.0.1 --port 8000"
+:: Start backend (new window)
+echo Starting backend service...
+start "Backend" cmd /k "cd /d "%ROOT%backend" && .venv\Scripts\uvicorn main:app --host 127.0.0.1 --port 8000"
 
-:: 等待后端启动
+:: Wait for backend to start
 timeout /t 2 /nobreak >nul
 
-:: 启动前端（新窗口）
-echo 正在启动前端服务...
-start "前端服务" cmd /k "cd /d "%ROOT%frontend" && npm run start"
+:: Start frontend (new window)
+echo Starting frontend service...
+start "Frontend" cmd /k "cd /d "%ROOT%frontend" && npm run start"
 
-:: 等待前端启动后打开浏览器
+:: Wait for frontend to start, then open browser
 timeout /t 3 /nobreak >nul
 start http://127.0.0.1:3000
 
 echo.
-echo 后端和前端已在独立窗口中启动，浏览器即将打开...
-echo 此窗口将自动关闭
+echo Backend and frontend started in separate windows.
+echo Browser will open shortly...
 timeout /t 2 >nul
 exit
