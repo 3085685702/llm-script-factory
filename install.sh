@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e  # 任何命令失败时自动退出
-
 # 获取脚本所在目录的绝对路径
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
@@ -31,12 +29,13 @@ echo "      ✅ Node.js 已安装 ($(node --version))"
 echo "[3/5] 初始化后端环境..."
 cd backend || { echo "❌ [错误] 无法进入 backend 目录"; exit 1; }
 
-if [ ! -d ".venv" ]; then
-    echo "      🔨 创建 Python 虚拟环境..."
-    python3 -m venv .venv || { echo "❌ [错误] 创建虚拟环境失败"; exit 1; }
-else
-    echo "      Using existing venv..."
+if [ -d ".venv" ]; then
+    echo "      🧹 检测到旧的虚拟环境，正在删除..."
+    rm -rf .venv || { echo "❌ [错误] 删除旧虚拟环境失败"; exit 1; }
 fi
+
+echo "      🔨 创建 Python 虚拟环境..."
+python3 -m venv .venv || { echo "❌ [错误] 创建虚拟环境失败"; exit 1; }
 
 source .venv/bin/activate || { echo "❌ [错误] 激活虚拟环境失败"; exit 1; }
 
