@@ -166,11 +166,22 @@ class BaseService:
         use_cache = get_val("useCache", False)
         cache_name = get_val("cacheName", None)
         
+        # 🔧 CRITICAL: Model choice is the SOLE routing authority.
+        # Cache is ONLY supported by Google provider. If user selected a non-Google model,
+        # forcefully disable cache to prevent silent fallback to Gemini.
+        model_cfg = self.llm.get_model_config(model_key)
+        provider = model_cfg.get("provider")
+        
+        if provider != "google" and use_cache:
+            print(f"⚠️ Cache disabled: Provider '{provider}' does not support caching. Using direct API call.")
+            use_cache = False
+            cache_name = None
+        
         # If cache is disabled in settings, forcefully ignore cache_name even if present
         resolved_cache_name = cache_name if use_cache else None
         
         # 3. Log Choice
-        print(f"⚙️ Config for {project_name}/{stage_id}: Model={model_key}, Temp={temperature}, Cache={resolved_cache_name}")
+        print(f"⚙️ Config for {project_name}/{stage_id}: Model={model_key}, Provider={provider}, Temp={temperature}, Cache={resolved_cache_name}")
         
         # 4. Execute with source tracking
         return self.process_request(

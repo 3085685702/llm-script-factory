@@ -37,6 +37,8 @@ export function ModelSelector() {
     const [models, setModels] = React.useState<ModelOption[]>([]);
     const [fetchingModels, setFetchingModels] = React.useState(false);
     const [buildingCache, setBuildingCache] = React.useState(false);
+    const [validatingCache, setValidatingCache] = React.useState(false);
+    const prevModelRef = React.useRef<string | null>(null);
 
     // Load available models from backend
     React.useEffect(() => {
@@ -144,6 +146,47 @@ export function ModelSelector() {
         }
     }, [settings.model, currentModelSupportsCache, models.length]);
 
+    // Validate cache when switching TO a Google model
+    React.useEffect(() => {
+        const prevModel = prevModelRef.current;
+        prevModelRef.current = settings.model;
+
+        // Skip initial render or if no previous model
+        if (!prevModel || !settings.model || prevModel === settings.model) return;
+
+        // Check if we're switching TO a Google model
+        const prevModelConfig = models.find(m => m.id === prevModel);
+        const currModelConfig = models.find(m => m.id === settings.model);
+
+        const wasGoogle = prevModelConfig?.provider === "google";
+        const isNowGoogle = currModelConfig?.provider === "google";
+
+        // If switching to Google + cache is enabled + cacheName exists -> validate
+        if (!wasGoogle && isNowGoogle && settings.useCache && settings.cacheName) {
+            setValidatingCache(true);
+            api.get(`/api/cache/validate/${encodeURIComponent(settings.cacheName)}`)
+                .then((res: any) => {
+                    if (!res.valid) {
+                        toast.warning(`⚠️ 缓存已失效: ${res.error || '请重新构建缓存'}`, {
+                            duration: 5000,
+                            action: {
+                                label: "重建缓存",
+                                onClick: () => handleBuildCache()
+                            }
+                        });
+                        // Clear invalid cache name
+                        updateSettings({ cacheName: null });
+                    } else {
+                        toast.success(`✅ 缓存有效，过期时间: ${res.expire_time}`);
+                    }
+                })
+                .catch(err => {
+                    console.error("Cache validation error:", err);
+                })
+                .finally(() => setValidatingCache(false));
+        }
+    }, [settings.model, models]);
+
     return (
         <Collapsible
             open={isOpen}
@@ -227,6 +270,15 @@ export function ModelSelector() {
                             className="scale-75 origin-right"
                         />
                     </div>
+
+                    {/* Warning: Non-Google model with cache conceptually enabled (settings residue) */}
+                    {currentModel && currentModel.provider !== "google" && settings.cacheName && (
+                        <div className="flex items-center gap-2 p-2 rounded-md bg-amber-50 border border-amber-200 dark:bg-amber-900/20 dark:border-amber-800">
+                            <span className="text-amber-600 dark:text-amber-400 text-xs">
+                                ⚠️ 当前模型不支持缓存，请求将直接发送（缓存不会被使用）
+                            </span>
+                        </div>
+                    )}
 
                     {/* Cache TTL */}
                     {settings.useCache && (

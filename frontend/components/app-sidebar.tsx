@@ -166,6 +166,8 @@ export function AppSidebar() {
         { name: "Stage 5: 润色优化", icon: Wand2, href: "/stage5", disabled: false },
         { name: "Stage 6: 剧本医生", icon: Stethoscope, href: "/stage6", disabled: false },
         { name: "Cache Manager", icon: Zap, href: "/cache", disabled: false },
+        { name: "API Keys", icon: Settings, href: "/settings/keys", disabled: false },
+        { name: "Models", icon: Settings, href: "/settings/models", disabled: false },
         { name: "Debug Console", icon: Bug, href: "/debug", disabled: false },
     ];
 

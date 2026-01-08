@@ -189,3 +189,42 @@ class CacheManager:
         api_key = CacheManager.get_google_api_key()
         return CacheManager.update_cache_ttl(api_key, cache_name, ttl_seconds)
 
+    @staticmethod
+    def validate_cache_by_name(cache_name: str) -> dict:
+        """
+        验证缓存是否有效（存在且未过期）
+        用于前端切换到 Google 模型时检查缓存状态
+        
+        Returns:
+            dict: { valid: bool, expire_time?: str, display_name?: str, error?: str }
+        """
+        try:
+            api_key = CacheManager.get_google_api_key()
+            cache_info = CacheManager.get_cache_info(api_key, cache_name)
+            
+            if cache_info is None:
+                return {"valid": False, "error": "缓存不存在或已过期"}
+            
+            # Extract expire time for display
+            expire_str = ""
+            if hasattr(cache_info, 'expire_time'):
+                try:
+                    ts = cache_info.expire_time
+                    if isinstance(ts, str):
+                        ts = datetime.datetime.fromisoformat(ts.replace("Z", "+00:00"))
+                    tz_beijing = datetime.timezone(datetime.timedelta(hours=8))
+                    local_ts = ts.astimezone(tz_beijing)
+                    expire_str = local_ts.strftime("%Y-%m-%d %H:%M:%S")
+                except:
+                    expire_str = str(cache_info.expire_time)
+            
+            return {
+                "valid": True,
+                "expire_time": expire_str,
+                "display_name": getattr(cache_info, 'display_name', 'N/A')
+            }
+        except ValueError as e:
+            return {"valid": False, "error": str(e)}
+        except Exception as e:
+            return {"valid": False, "error": f"验证失败: {str(e)}"}
+

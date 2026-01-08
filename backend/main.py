@@ -12,6 +12,7 @@ from api.routers.stage6 import router as stage6_router
 from api.routers.import_router import router as import_router
 from api.routers.debug import router as debug_router
 from api.routers.cache import router as cache_router
+from api.routers.settings import router as settings_router
 
 load_dotenv() 
 setup_chinese_logging()
@@ -43,6 +44,7 @@ app.include_router(stage6_router)
 app.include_router(import_router)
 app.include_router(debug_router)
 app.include_router(cache_router)
+app.include_router(settings_router)
 
 @app.get("/")
 def read_root():

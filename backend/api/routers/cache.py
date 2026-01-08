@@ -58,3 +58,12 @@ async def update_cache_ttl(cache_name: str, body: TTLUpdateRequest) -> dict:
             raise HTTPException(status_code=500, detail="更新 TTL 失败")
     except ValueError as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/validate/{cache_name:path}")
+async def validate_cache(cache_name: str) -> dict:
+    """
+    验证缓存是否有效（存在且未过期）
+    用于前端切换到 Google 模型时检查缓存状态
+    """
+    return CacheManager.validate_cache_by_name(cache_name)

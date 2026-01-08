@@ -38,6 +38,7 @@ export const api = {
         }
         return result;
     },
+    put: (endpoint: string, body: any) => fetchAPI(endpoint, { method: 'PUT', body: JSON.stringify(body) }),
     delete: (endpoint: string) => fetchAPI(endpoint, { method: 'DELETE' }),
     patch: (endpoint: string, body: any) => fetchAPI(endpoint, { method: 'PATCH', body: JSON.stringify(body) }),
 };

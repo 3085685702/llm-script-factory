@@ -68,9 +68,11 @@ class LLMManager:
         provider = model_cfg.get("provider")
         
         # ROUTING STRATEGY
+        # Note: Cache mode should only be reached for Google provider models.
+        # The upstream BaseService.process_aware_request() enforces this by disabling
+        # cache for non-Google providers. This assertion is a defensive safeguard.
         if cache_name:
-            if provider != "google":
-                raise ValueError("Cache Strategy allows ONLY 'google' provider models.")
+            assert provider == "google", f"BUG: Cache mode reached with non-Google provider '{provider}'. This should be blocked upstream."
             return self._execute_cache_strategy(model_cfg, prompt, cache_name, temperature, source, response_schema)
         else:
             return self._execute_standard_strategy(model_cfg, prompt, system_instruction, temperature, source, response_schema)
@@ -83,8 +85,16 @@ class LLMManager:
         Strict Execution Path for Cached Requests.
         NO System Prompt is allowed (baked in cache).
         """
-        api_key = os.getenv(model_cfg.get("api_key_env"))
+        api_key_env = model_cfg.get("api_key_env")
+        api_key = os.getenv(api_key_env)
         model_name = model_cfg.get("model_name")
+        
+        # Validate API Key
+        if not api_key:
+            raise ValueError(
+                f"❌ API Key 未配置: {api_key_env}\n"
+                f"请在 Settings > API Keys 中配置对应的 Key，或在 .env 文件中添加 {api_key_env}=你的密钥"
+            )
         
         # Prepare Thinking Config
         t_config = self._get_thinking_config(model_cfg)
@@ -148,8 +158,16 @@ class LLMManager:
         Supports both Google and OpenAI.
         """
         provider = model_cfg.get("provider")
-        api_key = os.getenv(model_cfg.get("api_key_env"))
+        api_key_env = model_cfg.get("api_key_env")
+        api_key = os.getenv(api_key_env)
         model_name = model_cfg.get("model_name")
+        
+        # Validate API Key
+        if not api_key:
+            raise ValueError(
+                f"❌ API Key 未配置: {api_key_env}\n"
+                f"请在 Settings > API Keys 中配置对应的 Key，或在 .env 文件中添加 {api_key_env}=你的密钥"
+            )
         
         raw_text = ""
         usage = {}

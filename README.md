@@ -14,6 +14,7 @@
 
 - 🚀 **全流程覆盖**：从创意到成品剧本，6 个阶段一站式完成
 - 🤖 **多模型支持**：支持 Google Gemini、DeepSeek 等主流大模型
+- ⚙️ **可视化配置**：内置 API Key 和模型管理页面，无需手动编辑配置文件
 - 📝 **所见即所得**：Markdown 编辑器，实时预览，支持手动调整 AI 生成内容
 - 💾 **本地优先**：所有数据保存在本地，无需担心隐私泄露
 - 🎯 **短剧专精**：专为 80-100 集竖屏短剧设计的结构化工作流
@@ -134,9 +135,19 @@ script-factory-ai/
 
 ## 🔧 配置说明
 
-### 模型配置
+### API Key 与模型管理
 
-编辑 `backend/config/models.yaml` 可自定义各阶段使用的模型。
+启动应用后，访问侧边栏的 **API Keys** 和 **Models** 页面进行可视化配置：
+
+- `/settings/keys` - 管理 API 密钥（Gemini、DeepSeek 等）
+- `/settings/models` - 管理模型配置（新增、编辑、删除）
+
+也可以手动编辑配置文件：
+
+- `backend/.env` - API 密钥
+- `backend/config/models.yaml` - 模型配置
+
+### 模型配置示例
 
 **支持任何兼容 OpenAI 标准的 API！** 只需添加 `provider: openai` 和 `base_url` 即可接入：
 
