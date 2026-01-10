@@ -63,22 +63,52 @@ class FileManager:
         Custom recursive validator.
         Supports basic type checking and required fields.
         """
-        # 1. Handle Array Type
-        if schema.get("type") == "array":
-            if not isinstance(data, list):
-                return False, "Expected a list (array), got something else."
-            
-            item_schema = schema.get("items")
-            if item_schema:
-                for idx, item in enumerate(data):
-                    valid, msg = FileManager._validate_schema_logic(item, item_schema)
-                    if not valid:
-                        return False, f"Item {idx}: {msg}"
+        if not isinstance(schema, dict):
             return True, "Valid"
 
+        schema_type = schema.get("type")
+        allowed_types = schema_type if isinstance(schema_type, list) else [schema_type] if schema_type else []
+
+        def is_valid_primitive(expected_type: str, value: Any) -> bool:
+            if expected_type == "string":
+                return isinstance(value, str)
+            if expected_type == "number":
+                return isinstance(value, (int, float)) and not isinstance(value, bool)
+            if expected_type == "integer":
+                return isinstance(value, int) and not isinstance(value, bool)
+            if expected_type == "boolean":
+                return isinstance(value, bool)
+            if expected_type == "null":
+                return value is None
+            return False
+
+        # 1. Handle Array Type
+        if "array" in allowed_types or schema_type == "array":
+            if isinstance(data, list):
+                item_schema = schema.get("items")
+                if item_schema:
+                    for idx, item in enumerate(data):
+                        valid, msg = FileManager._validate_schema_logic(item, item_schema)
+                        if not valid:
+                            return False, f"Item {idx}: {msg}"
+                return True, "Valid"
+            if allowed_types:
+                return False, "Expected a list (array), got something else."
+
         # 2. Handle Object Type
-        if isinstance(schema, dict):
-            # Check required fields
+        if "object" in allowed_types or schema_type == "object":
+            if not isinstance(data, dict):
+                return False, "Expected an object, got something else."
+
+        # 3. Handle Primitive Types
+        primitive_types = {"string", "number", "integer", "boolean", "null"}
+        if allowed_types and any(t in primitive_types for t in allowed_types):
+            if any(is_valid_primitive(t, data) for t in allowed_types if t in primitive_types):
+                return True, "Valid"
+            return False, f"Expected type {allowed_types}, got {type(data).__name__}."
+
+        # Check required fields for objects
+        if isinstance(data, dict):
             if "required" in schema and isinstance(schema["required"], list):
                 for req in schema["required"]:
                     if req not in data:
@@ -86,11 +116,11 @@ class FileManager:
             
             # Recursive check for properties
             properties = schema.get("properties")
-            if properties and isinstance(properties, dict) and isinstance(data, dict):
+            if properties and isinstance(properties, dict):
                 for key, prop_schema in properties.items():
                     if key in data:
                         valid, msg = FileManager._validate_schema_logic(data[key], prop_schema)
                         if not valid:
                             return False, f"Key '{key}': {msg}"
-                            
+
         return True, "Valid"

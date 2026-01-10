@@ -62,12 +62,12 @@ class ImportService(BaseService):
     ) -> bool:
         """将解析后的剧集保存到 Stage 4/5/6"""
         formatted = ScriptParser.format_episodes_for_save(episodes)
-        project_root = f"projects/{project_name}"
+        project_root = os.path.join(self.projects.root_dir, project_name)
         
         paths = [
-            f"{project_root}/4_scripts/script_drafts.json",
-            f"{project_root}/5_scripts/refined_scripts.json",
-            f"{project_root}/6_scripts/final_scripts.json"
+            os.path.join(project_root, "4_scripts", "script_drafts.json"),
+            os.path.join(project_root, "5_scripts", "refined_scripts.json"),
+            os.path.join(project_root, "6_scripts", "final_scripts.json")
         ]
         
         for path in paths:
@@ -242,7 +242,12 @@ class ImportService(BaseService):
 
     def _save_story_bible(self, project_name: str, result: Dict):
         """Save Story Bible to Stage 1."""
-        stage1_path = f"projects/{project_name}/1_ideas/story_bible.json"
+        stage1_path = os.path.join(
+            self.projects.root_dir,
+            project_name,
+            "1_ideas",
+            "story_bible.json"
+        )
         os.makedirs(os.path.dirname(stage1_path), exist_ok=True)
         
         with open(stage1_path, 'w', encoding='utf-8') as f:
@@ -255,7 +260,12 @@ class ImportService(BaseService):
     # =========================================================================
     def _load_stage4_scripts(self, project_name: str) -> List[Dict]:
         """Load Stage 4 scripts."""
-        stage4_path = f"projects/{project_name}/4_scripts/script_drafts.json"
+        stage4_path = os.path.join(
+            self.projects.root_dir,
+            project_name,
+            "4_scripts",
+            "script_drafts.json"
+        )
         if not os.path.exists(stage4_path):
             return []
         
