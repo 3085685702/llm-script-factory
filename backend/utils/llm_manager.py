@@ -1,6 +1,7 @@
 import os
 import json
 import re
+from pathlib import Path
 import yaml
 from google.genai import types
 from .llm_gateway import LLMGateway
@@ -17,8 +18,9 @@ class LLMManager:
         self.config = self._load_config()
 
     def _load_config(self):
+        config_path = Path(__file__).resolve().parent.parent / "config" / "models.yaml"
         try:
-            with open("config/models.yaml", "r", encoding="utf-8") as f:
+            with config_path.open("r", encoding="utf-8") as f:
                 return yaml.safe_load(f)
         except Exception:
             return {}
