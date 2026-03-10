@@ -27,11 +27,10 @@ backend/__pycache__/
 .venv/
 
 # =========================
-# Frontend (Nuxt.js / Node)
+# Frontend (Next.js / Node)
 # =========================
 node_modules/
-.nuxt/
-.output/
+.next/
 dist/
 npm-debug.log*
 yarn-debug.log*

@@ -21,7 +21,7 @@ class LLMGateway:
     def _get_openai_client(api_key, base_url):
         # Explicitly use a clean httpx client to avoid environmental pollution or proxy args issues
         # occurring in implicit default client creation.
-        http_client = httpx.Client()
+        http_client = httpx.Client(timeout=httpx.Timeout(120.0))
         return openai.OpenAI(api_key=api_key, base_url=base_url, http_client=http_client)
 
     def _retry_wrapper(self, func_name, func, *args, **kwargs):
@@ -38,12 +38,10 @@ class LLMGateway:
         for attempt in range(max_retries + 1):
             try:
                 return func(*args, **kwargs)
-            except (ssl.SSLEOFError, ssl.SSLError, httpx.ReadError, httpx.ConnectError, httpx.TimeoutException, OSError) as e:
-                # Check for specific EOF violation text just in case generic OSError catches it
-                is_ssl_eof = "UNEXPECTED_EOF_WHILE_READING" in str(e) or isinstance(e, ssl.SSLEOFError)
-                is_net = isinstance(e, (httpx.ConnectError, httpx.ReadError, httpx.TimeoutException))
+            except (ssl.SSLEOFError, ssl.SSLError, httpx.ReadError, httpx.ConnectError, httpx.TimeoutException) as e:
+                is_retryable = True
                 
-                if (is_ssl_eof or is_net) and attempt < max_retries:
+                if is_retryable and attempt < max_retries:
                     wait_time = (attempt + 1) * 1.5
                     print(f"⚠️ [LLM Gateway] Network Error ({type(e).__name__}) during {func_name}. Retrying ({attempt+1}/{max_retries}) in {wait_time}s...")
                     time.sleep(wait_time)

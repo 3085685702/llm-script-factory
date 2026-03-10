@@ -5,9 +5,6 @@ google-genai
 openai
 jinja2
 pyyaml
-tenacity
-requests
-watchdog
 colorama
 python-multipart
 python-docx

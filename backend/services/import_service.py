@@ -236,7 +236,7 @@ class ImportService(BaseService):
         if isinstance(result, str):
             try:
                 return json.loads(result)
-            except:
+            except Exception:
                 return {"raw_content": result}
         return result if isinstance(result, dict) else {"raw_content": str(result)}
 

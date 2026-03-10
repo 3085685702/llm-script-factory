@@ -74,7 +74,7 @@ class CacheManager:
         client = CacheManager._get_client(api_key)
         try:
             return client.caches.get(name=cache_name)
-        except:
+        except Exception:
             return None
 
     @staticmethod
@@ -90,7 +90,7 @@ class CacheManager:
         try:
             client.caches.delete(name=cache_name)
             return True
-        except:
+        except Exception:
             return False
 
     @staticmethod
@@ -144,7 +144,7 @@ class CacheManager:
                     local_ts = ts.astimezone(tz_beijing)
                     expire_str = local_ts.strftime("%Y-%m-%d %H:%M:%S")
                     expire_raw = str(c.expire_time)
-                except:
+                except Exception:
                     expire_str = str(c.expire_time)
                     expire_raw = expire_str
             
@@ -215,7 +215,7 @@ class CacheManager:
                     tz_beijing = datetime.timezone(datetime.timedelta(hours=8))
                     local_ts = ts.astimezone(tz_beijing)
                     expire_str = local_ts.strftime("%Y-%m-%d %H:%M:%S")
-                except:
+                except Exception:
                     expire_str = str(cache_info.expire_time)
             
             return {

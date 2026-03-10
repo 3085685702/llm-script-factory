@@ -2,6 +2,7 @@
 import datetime
 import json
 import os
+from pathlib import Path
 
 # Mock session state if needed or specific memory storage
 _MEMORY_LOGS = []
@@ -12,7 +13,7 @@ class DebugManager:
     Stores logs in memory (session) for UI widget and persists to disk (logs/) for Page 99.
     """
     
-    LOG_DIR = "logs"
+    LOG_DIR = str(Path(__file__).resolve().parent.parent / "logs")
     
     @staticmethod
     def _get_log_filepath(date_str=None):
@@ -91,7 +92,7 @@ class DebugManager:
                         if line.strip():
                             try:
                                 logs.append(json.loads(line))
-                            except:
+                            except Exception:
                                 pass
             except Exception as e:
                 return []

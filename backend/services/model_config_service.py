@@ -76,7 +76,7 @@ class ModelConfigService:
             if ModelConfigService.CONFIG_PATH.exists():
                 shutil.copy(ModelConfigService.CONFIG_PATH, ModelConfigService.CONFIG_BACKUP_PATH)
             return True
-        except:
+        except Exception:
             return False
     
     @staticmethod

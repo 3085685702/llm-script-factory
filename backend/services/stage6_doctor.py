@@ -326,7 +326,7 @@ class Stage6Service(BaseService):
                 with open(path, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     return data.get("concept", "")
-            except:
+            except Exception:
                 pass
         return ""
 
@@ -376,7 +376,7 @@ class Stage6Service(BaseService):
             try:
                 with open(path, "r", encoding='utf-8') as f:
                     current_list = json.load(f)
-            except:
+            except Exception:
                 current_list = []
 
         # 2. Upsert
