@@ -1,4 +1,5 @@
 import os
+import json
 import shutil
 import datetime
 from typing import List, Dict, Optional
@@ -116,7 +117,6 @@ class ProjectService:
             
         try:
             with open(path, "r", encoding="utf-8") as f:
-                import json
                 return json.load(f)
         except Exception as e:
             print(f"Error loading settings for {project_name}: {e}")
@@ -137,7 +137,6 @@ class ProjectService:
         
         try:
             with open(path, "w", encoding="utf-8") as f:
-                import json
                 json.dump(settings, f, indent=2, ensure_ascii=False)
             return True
         except Exception as e:
@@ -179,7 +178,6 @@ class ProjectService:
         
         try:
             with open(path, "w", encoding="utf-8") as f:
-                import json
                 json.dump(new_settings, f, indent=2, ensure_ascii=False)
             return new_settings
         except Exception as e:
