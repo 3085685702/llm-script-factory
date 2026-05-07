@@ -6,6 +6,7 @@
 ._*
 .vscode/
 .idea/
+Thumbs.db
 *.log
 
 # =========================
@@ -36,6 +37,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+package-lock.json
+yarn.lock
 
 # =========================
 # Streamlit & Legacy Utils
@@ -47,3 +50,17 @@ yarn-error.log*
 # =========================
 downloads/
 download_runtimes.bat
+
+# =========================
+# Outputs / artifacts
+# =========================
+output/
+result/
+export/
+
+# =========================
+# Config / secret files
+# =========================
+config.yaml
+config.json
+*.key

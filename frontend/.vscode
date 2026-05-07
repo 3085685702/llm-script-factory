@@ -1,0 +1,38 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "一键安装依赖（国内镜像）",
+            "type": "shell",
+            "command": "pip",
+            "args": [
+                "install",
+                "-r",
+                "requirements.txt",
+                "-i",
+                "https://pypi.tuna.tsinghua.edu.cn/simple"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "自动用清华镜像安装所有依赖，无需手动操作"
+        },
+        {
+            "label": "复制配置文件",
+            "type": "shell",
+            "command": "cp",
+            "args": [
+                "config.example.yaml",
+                "config.yaml"
+            ],
+            "windows": {
+                "command": "copy",
+                "args": [
+                    "config.example.yaml",
+                    "config.yaml"
+                ]
+            },
+            "problemMatcher": [],
+            "detail": "自动复制示例配置文件，无需手动操作"
+        }
+    ]
+}

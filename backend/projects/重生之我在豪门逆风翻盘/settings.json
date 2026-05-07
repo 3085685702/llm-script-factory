@@ -1,0 +1,53 @@
+{
+  "project_name": "重生之我在豪门逆风翻盘",
+  "description": "女频重生复仇爽剧",
+  "theme": "女频重生复仇爽剧",
+  "total_episodes": 30,
+  "episode_duration": "2分钟",
+  "language": "中文",
+  "platform": "抖音/快手/红果短剧",
+  "genre_template": "复仇重生",
+  "hook_type": "反转钩",
+  "rhythm_curve": "standard_short_drama",
+  "paywall_setting": "standard",
+  "core_story": "女主被丈夫和继妹联手害死，夺走家产和父母留下的专利，重生回到被害前一年，凭借前世记忆，一步步撕开渣男贱女的伪装，夺回属于自己的一切，同时收获真正的爱情，完成逆风翻盘。",
+  "core_conflict": "女主vs渣男丈夫+恶毒继妹+偏心继母，层层递进的复仇线，每3集一个小反转，每10集一个大高潮",
+  "main_character": [
+    {
+      "name": "苏晚",
+      "identity": "女主，苏氏集团唯一继承人，重生前温柔软弱，重生后冷静腹黑，智商在线，杀伐果断"
+    },
+    {
+      "name": "顾言琛",
+      "identity": "男主，顶级豪门继承人，暗中帮助女主，前世默默守护女主，今生双向奔赴"
+    },
+    {
+      "name": "林浩宇",
+      "identity": "反派1，女主前夫，凤凰男，表面温柔，实则阴狠，贪图女主家产"
+    },
+    {
+      "name": "苏雨柔",
+      "identity": "反派2，女主继妹，白莲花，嫉妒女主，暗中联合林浩宇害死女主"
+    }
+  ],
+  "output": {
+    "format": "markdown",
+    "dir": "./output",
+    "include_character_bio": true,
+    "include_episode_outline": true,
+    "include_full_script": true,
+    "include_shooting_hint": true
+  },
+  "ai": {
+    "provider": "doubao",
+    "api_key": "你的豆包API密钥",
+    "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+    "model": "doubao-1.5-pro-250415",
+    "temperature": 0.75
+  },
+  "stage1": {
+    "model": "doubao-1.5-pro-250415",
+    "temperature": 0.75,
+    "useCache": false
+  }
+}
